@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <h1>filestack uploader</h1>
-    <FilesImporter/>
+    <FilesImporter sharedState="sharedState"/>
   </div>
 </template>
 

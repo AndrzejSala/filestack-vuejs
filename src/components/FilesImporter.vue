@@ -1,13 +1,13 @@
 <template>
   <div class="filesImporter">
-    <!--UPLOAD-->
-    <form enctype="multipart/form-data" novalidate v-if="isInitial || isSaving">
+    <!--IMPORT-->
+    <form enctype="multipart/form-data" novalidate v-if="isInitial">
       <div class="dropbox">
         <input
           type="file"
           multiple
-          :name="uploadFieldName"
-          :disabled="isSaving"
+          name="files"
+          :disabled="isImporting"
           @change="filesChange($event.target.name, $event.target.files); fileCount = $event.target.files.length"
           accept="image/*"
           class="input-file"
@@ -15,31 +15,33 @@
         <p v-if="isInitial">Drag your file(s) here to begin
           <br>or click to browse
         </p>
-        <p v-if="isSaving">Uploading {{ fileCount }} files...</p>
       </div>
     </form>
     <!--SUCCESS-->
-    <div v-if="isSaving || isSuccess">
-      <h2>Uploaded {{ uploadedFiles.length }} file(s) successfully.</h2>
+    <div v-if="isImporting || isSuccess">
+      <h2>Select files which you want to upload to the Filestack</h2>
       <p>
-        <a href="javascript:void(0)" @click="reset()">Upload again</a>
+        <a href="javascript:void(0)" @click="reset()">Select files from your computer again</a>
       </p>
       <div class="filesWrapper">
         <div class="header">
-          <div>Selected</div>
-          <div>Thumbnail</div>
-          <div>Title</div>
-          <div>Extension</div>
-          <div>Size</div>
+          <div class="selected">Selected</div>
+          <div class="thumbnail">Thumbnail</div>
+          <div class="title">Title</div>
+          <div class="extension">Extension</div>
+          <div class="size">Size</div>
         </div>
         <ul>
-          <li v-for="item in uploadedFiles">
-            <md-checkbox v-model="boolean">Boolean</md-checkbox>
-            <img :src="item.url" class="img-responsive img-thumbnail" :alt="item.originalName">
-            <p>{{item.originalName}}</p>
-            <p>{{item.extension}}</p>
-            <p>{{item.size}}</p>
-          </li>
+          <ListElement v-for="item in files" :key="item.id" :item="item"/>
+          <!-- <li v-for="item in files" :key="item.id">
+            <md-checkbox class="selected"  v-model="selectedFiles" :value="item.id">Array</md-checkbox>
+            <div class="thumbnail">
+              <img :src="item.url" class="img-responsive img-thumbnail" :alt="item.originalName">
+            </div>
+            <p class="title">{{item.originalName}}</p>
+            <p class="extension">{{item.extension}}</p>
+            <p class="size">{{item.size}} Bytes</p>
+          </li>-->
         </ul>
       </div>
     </div>
@@ -59,50 +61,60 @@
 import { upload } from "./../services/file-upload.fake.service"; // fake service
 // import { upload } from './../services/file-upload.service';   // real service
 import { wait } from "./../utils";
+import store from "./../store";
+import ListElement from "./ListElement";
 
 const STATUS_INITIAL = 0,
-  STATUS_SAVING = 1,
-  STATUS_SUCCESS = 2,
-  STATUS_FAILED = 3;
+  STATUS_IMPORT = 1,
+  STATUS_UPLOAD = 2,
+  STATUS_SUCCESS = 3,
+  STATUS_FAILED = 4;
 
 export default {
   name: "filesImporter",
+  components: {
+    ListElement
+  },
   data() {
     return {
-      uploadedFiles: [],
       uploadError: null,
-      currentStatus: null,
-      uploadFieldName: "photos"
+      currentStatus: null
     };
   },
   computed: {
     isInitial() {
       return this.currentStatus === STATUS_INITIAL;
     },
-    isSaving() {
-      return this.currentStatus === STATUS_SAVING;
+    isImporting() {
+      return this.currentStatus === STATUS_IMPORT;
+    },
+    isUploading() {
+      return this.currentStatus === STATUS_UPLOAD;
     },
     isSuccess() {
       return this.currentStatus === STATUS_SUCCESS;
     },
     isFailed() {
       return this.currentStatus === STATUS_FAILED;
+    },
+    files() {
+      return store.getFiles()
     }
   },
   methods: {
     reset() {
       // reset form to initial state
       this.currentStatus = STATUS_INITIAL;
-      this.uploadedFiles = [];
+      store.resetFiles();
       this.uploadError = null;
     },
     save(formData) {
       // upload data to the server
-      this.currentStatus = STATUS_SAVING;
+      this.currentStatus = STATUS_IMPORT;
       upload(formData)
         // .then(wait(1500)) // DEV ONLY: wait for 1.5s
-        .then(x => {
-          this.uploadedFiles = [].concat(x);
+        .then(newFiles => {
+          store.addFile(newFiles)
           this.currentStatus = STATUS_SUCCESS;
         })
         .catch(err => {
@@ -124,6 +136,9 @@ export default {
       // save it
       this.save(formData);
     }
+    // checkFile(id) {
+    //   console.log('###4', id)
+    // }
   },
   mounted() {
     this.reset();
@@ -161,13 +176,55 @@ export default {
   list-style: none;
   padding: 0;
   margin: 0;
+  text-align: center;
+  .header {
+    text-transform: uppercase;
+    position: relative;
+    display: flex;
+    background: lightgreen;
+    padding: 10px 0;
+    .selected {
+      width: 10%;
+    }
+    .thumbnail {
+      width: 30%;
+    }
+    .title {
+      width: 30%;
+    }
+    .extension {
+      width: 10%;
+    }
+    .size {
+      width: 20%;
+    }
+  }
   ul {
+    .selected {
+      width: 10%;
+      .md-checkbox-label {
+        display: none;
+      }
+    }
+    .thumbnail {
+      width: 30%;
+    }
+    .title {
+      width: 30%;
+    }
+    .extension {
+      width: 10%;
+    }
+    .size {
+      width: 20%;
+    }
     li {
       width: 100%;
       height: 100px;
       position: relative;
       display: flex;
       flex-direction: row;
+      margin-bottom: 20px;
       img {
         max-height: 100%;
       }

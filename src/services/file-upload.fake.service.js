@@ -1,13 +1,21 @@
+var uuid4 = require('uuid4');
+
 function upload(formData) {
-    const photos = formData.getAll('photos');
-    const promises = photos.map((x) => getImage(x)
+    const files = formData.getAll('files');
+    const promises = files.map((x) => getImage(x)
         .then(img => ({
-            id: img,
+            id: uuid4(),
             originalName: x.name,
             fileName: x.name,
             url: img,
             extension: x.name.split('.')[1],
-            size: x.size
+            size: x.size,
+            isSelected: false,
+            uploadInfo: {
+                isUploaded: false,
+                progress: 0,
+                speed: 0
+            }
         })));
     return Promise.all(promises);
 }
