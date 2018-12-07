@@ -11,24 +11,24 @@
 </template>
 
 <script>
-import store from "./../store";
 export default {
   name: "listElement",
   props: {
     item: Object
   },
-  data() {
-    return {
-      files: store.state.files
-    }
-  },
   computed: {
     selectedFiles: {
       get() {
-        return store.getFiles()
+        return this.$store.getters.files
+          .filter(item => {
+            return item.isSelected;
+          })
+          .map(item => {
+            return item.id;
+          });
       },
       set(newValue) {
-        store.setFiles(newValue)
+        this.$store.commit('selectFile', newValue)
       }
     }
   }
@@ -66,5 +66,3 @@ export default {
       }
     }
 </style>
-
-

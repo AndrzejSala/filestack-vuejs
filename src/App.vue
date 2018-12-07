@@ -1,16 +1,16 @@
 <template>
   <div id="app">
     <h1>filestack uploader</h1>
-    <FilesImporter sharedState="sharedState"/>
+    <FileUploader />
   </div>
 </template>
 
 <script>
-import FilesImporter from "./components/FilesImporter.vue";
+import FileUploader from "./components/FileUploader.vue";
 export default {
   name: "app",
   components: {
-    FilesImporter
+    FileUploader
   }
 };
 </script>
