@@ -12,9 +12,12 @@ function filesImport(formData) {
             size: x.size,
             isSelected: false,
             uploadInfo: {
-                isUploaded: false,
+                status: 'Not uploaded',
                 progress: 0,
-                speed: 0
+                bytesSent: 0,
+                lastChunkSize: 0,
+                startTime: null,
+                endTime: null
             }
         })));
     return Promise.all(promises);
