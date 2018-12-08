@@ -6,7 +6,6 @@
           multiple
           name="files"
           @change="filesChange($event.target.name, $event.target.files); fileCount = $event.target.files.length"
-          accept="image/*"
           class="input-file"
         >
         <p v-if="isInitial">Drag your file(s) here to begin
@@ -17,7 +16,7 @@
 </template>
 
 <script>
-import { upload } from "./../services/file-upload.fake.service"; // fake service
+import { filesImport } from "./../helpers/fileImportHelper";
 import statuses from "./../consts/statuses"
 
 
@@ -34,7 +33,7 @@ export default {
   methods: {
     save(formData) {
       this.$store.commit('setStatus', statuses.IMPORT)
-      upload(formData)
+      filesImport(formData)
         .then(newFiles => {
           this.$store.commit('addFiles', newFiles)
           this.$store.commit('setStatus', statuses.SUCCESS)
@@ -56,7 +55,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 .dropbox {
   outline: 2px dashed grey; /* the dash box */
   outline-offset: -10px;

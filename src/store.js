@@ -1,34 +1,50 @@
-export default {
-    debug: true,
+import Vue from 'vue';
+import Vuex from 'vuex';
+import createLogger from 'vuex/dist/logger'
+Vue.use(Vuex);
+const debug = process.env.NODE_ENV !== 'production'
+
+export default new Vuex.Store({
     state: {
-        message: 'Hello!',
-        files: []
+        files: {},
+        currentStatus: 0,
+        uploadError: null
     },
-    resetFiles() {
-        this.state.files = []
+    getters: {
+        counter: state => state.counter * 2,
+        files: state => state.files,
+        currentStatus: state => state.currentStatus,
+        uploadError: state => state.uploadError
     },
-    addFile(file) {
-        file.forEach(item => {
-            console.log('###22', item)
-            this.state.files.push(item)
-        })
-        console.log('###33', this.state.files.length)
-    },
-    getFiles() {
-        return this.state.files
-          .filter(item => {
-            return item.isSelected;
-          })
-          .map(item => {
-            return item.id;
-          });
-    },
-    setFiles(newValue) {
-        console.log('###5', newValue)
-        for (let file of this.state.files) {
-            this.state.files[file.id].isSelected = newValue.includes(file.id) ? true : false;
+    mutations: {
+        addFiles: (state, payload) => {
+            payload.forEach(file => {
+                state.files[file.id] = file
+            })
+        },
+        resetStore: state => {
+            state.files = [],
+                state.currentStatus = 0,
+                state.uploadError = null
+        },
+        selectFile: (state, payload) => {
+            // console.log('###6', payload)
+            for (let key in state.files) {
+                // console.log('###7', state.files[key].id, payload, payload.includes(state.files[key].id) )
+                state.files[key].isSelected = payload.includes(state.files[key].id) ? true : false
+            }
+            // console.log('###8', state.files)
+            // for (id of payload) {
+            //     state.files[id].isSelected
+            // }
+        },
+        setStatus: (state, payload) => {
+            state.currentStatus = payload
+        },
+        setError: (state, payload) => {
+            state.uploadError = payload
         }
-        console.log('###6', this.state.files)
-        console.log('###7', this.getFiles())
-    }
-}
+    },
+    strict: debug,
+    plugins: debug ? [createLogger()] : []
+});

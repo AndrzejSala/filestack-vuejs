@@ -3,7 +3,7 @@
     <!--IMPORT-->
     <DropBox v-if="isInitial"/>
     <!--SUCCESS-->
-    <FilesList v-if="isImporting || isSuccess"/>
+    <FilesList v-if="isSuccess"/>
     <!--FAILED-->
     <ErrorInfo v-if="isFailed"/>
   </div>
@@ -40,5 +40,5 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 </style>

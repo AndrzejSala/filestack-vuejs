@@ -1,13 +1,13 @@
 var uuid4 = require('uuid4');
 
-function upload(formData) {
+function filesImport(formData) {
     const files = formData.getAll('files');
-    const promises = files.map((x) => getImage(x)
-        .then(img => ({
+    const promises = files.map((x) => getFile(x)
+        .then(fileData => ({
             id: uuid4(),
             originalName: x.name,
             fileName: x.name,
-            url: img,
+            fileData,
             extension: x.name.split('.')[1],
             size: x.size,
             isSelected: false,
@@ -20,7 +20,7 @@ function upload(formData) {
     return Promise.all(promises);
 }
 
-function getImage(file) {
+function getFile(file) {
     return new Promise((resolve, reject) => {
         const fReader = new FileReader();
         const img = document.createElement('img');
@@ -45,5 +45,4 @@ function getBase64Image(img) {
     return dataURL;
 }
 
-export { upload }
-
+export { filesImport }
