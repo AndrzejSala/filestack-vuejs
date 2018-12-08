@@ -31,18 +31,10 @@ export default {
   computed: {
     selectedFiles: {
       get() {
-        console.log('###7')
-        // console.log('###9', this.$store.getters.files)
-        // return Object.keys(this.$store.getters.files)
-        //   .filter(id => {
-        //     return this.$store.getters.files[id].isSelected;
-        //   });
         return this.array
       },
       set(newValue) {
-        console.log('###5', newValue);
-        console.log('###6', this.item);
-        this.$store.commit("selectFile", newValue);
+        this.$store.commit("selectFile", {id: this.item.id, value: newValue.length > 0});
       }
     }
   }

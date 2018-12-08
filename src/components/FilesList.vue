@@ -17,6 +17,7 @@
       <ul class="elementsWrapper">
         <ListElement v-for="item in files" :key="item.id" :item="item"/>
       </ul>
+      <md-button @click="isSelectedToUpload" :disabled="isSelectedToUpload" class="md-raised md-primary">Primary</md-button>
     </div>
   </div>
 </template>
@@ -31,14 +32,27 @@ export default {
   },
   computed: {
     files() {
-      console.log('###3', this.$store.getters.files)
       return this.$store.getters.files;
+    }
+    ,
+    isSelectedToUpload() {
+      const selectedFiles = Object.keys(this.$store.getters.files).filter(key => {
+        return this.$store.getters.files[key].isSelected
+      })
+      return selectedFiles.length;
     }
   },
   methods: {
     reset() {
       this.$store.commit("resetStore");
     }
+    // ,
+    // isSelectedToUpload() {
+    //   const selectedFiles = Object.keys(this.$store.getters.files).filter(key => {
+    //     return this.$store.getters.files[key].isSelected
+    //   })
+    //   console.log('###3', selectedFiles)
+    // }
   }
 };
 </script>

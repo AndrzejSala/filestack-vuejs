@@ -28,15 +28,7 @@ export default new Vuex.Store({
                 state.uploadError = null
         },
         selectFile: (state, payload) => {
-            // console.log('###6', payload)
-            for (let key in state.files) {
-                // console.log('###7', state.files[key].id, payload, payload.includes(state.files[key].id) )
-                state.files[key].isSelected = payload.includes(state.files[key].id) ? true : false
-            }
-            // console.log('###8', state.files)
-            // for (id of payload) {
-            //     state.files[id].isSelected
-            // }
+            state.files[payload.id].isSelected = payload.value
         },
         setStatus: (state, payload) => {
             state.currentStatus = payload
