@@ -19,7 +19,8 @@ function filesImport(formData) {
                 bytesSent: 0,
                 lastChunkSize: 0,
                 startTime: null,
-                endTime: null
+                endTime: null,
+                url: null
             }
         }
         if (['jpg', 'jpeg'].includes(fileObj.extension)) {

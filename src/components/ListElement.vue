@@ -18,6 +18,15 @@
       <div class="size">{{item.size}} Bytes</div>
       <div class="status">{{item.uploadInfo.status}}</div>
     </div>
+    <div class="filestackUrl">
+      {{item.uploadInfo.url}}
+    </div>
+    <div v-if="item.exif" class="exifInfoWrapper">
+      <div :key="key" v-for="(value, key) in item.exif">
+        <span class="key">{{key}}: </span>
+        <span class="value">{{value}}</span>
+      </div>
+    </div>
     <div class="progressBarWrapper">
       <div class="progressWrapper">
         <span class="title">Progress:</span>
@@ -159,6 +168,18 @@ export default {
       display: inline-block;
       padding-right: 30px;
     }
+  }
+  .exifInfoWrapper {
+    margin-top: 20px;
+    text-align: left;
+    .key {
+      font-weight: bold;
+    }
+  }
+  .filestackUrl {
+    font-weight: bold;
+    text-align: left;
+    margin-top: 20px;
   }
 }
 </style>

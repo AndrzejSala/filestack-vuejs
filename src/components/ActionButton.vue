@@ -51,11 +51,13 @@ export default {
           };
           this.$store.commit("updateUploadProgress", payload);
         };
-        const onSuccess = () => {
+        const onSuccess = (res) => {
+          // console.log('###', res.url)
           let payload = {
             id: file.id,
             progress: 100,
-            endTime: parseInt(new Date().getTime() / 1000, 10)
+            endTime: parseInt(new Date().getTime() / 1000, 10),
+            url: res.url
           };
           this.$store.commit("updateUploadProgress", payload);
         };

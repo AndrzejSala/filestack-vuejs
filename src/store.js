@@ -58,6 +58,7 @@ export default new Vuex.Store({
                     fileUploadInfo.startTime = payload.startTime
                 } else if (payload.endTime) {
                     fileUploadInfo.endTime = payload.endTime
+                    fileUploadInfo.url = payload.url
                 }
             }
         }
