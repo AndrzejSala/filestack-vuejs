@@ -3,7 +3,7 @@
     <!--IMPORT-->
     <DropBox v-if="isInitial"/>
     <!--SUCCESS-->
-    <FilesList v-if="isSuccess"/>
+    <FilesList v-if="isImport || isUpload || isSuccess"/>
     <!--FAILED-->
     <ErrorInfo v-if="isFailed"/>
   </div>
@@ -24,10 +24,10 @@ export default {
     isInitial() {
       return this.$store.getters.currentStatus === statuses.INITIAL;
     },
-    isImporting() {
+    isImport() {
       return this.$store.getters.currentStatus === statuses.IMPORT;
     },
-    isUploading() {
+    isUpload() {
       return this.$store.getters.currentStatus === statuses.UPLOAD;
     },
     isSuccess() {

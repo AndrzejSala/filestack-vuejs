@@ -1,7 +1,9 @@
 <template>
   <li class="listElement">
     <div class="columnWrapper">
-      <md-checkbox class="selected" v-model="selectedFiles" :value="item.id">Array</md-checkbox>
+      <div class="selectToUpload">
+        <md-checkbox :disabled="item.uploadInfo.status !== 'Not uploaded'" class="selected" v-model="selectedFiles" :value="item.id">Array</md-checkbox>
+      </div>
       <div class="thumbnail">
         <img
           v-if="imgExtensions.includes(item.extension)"
@@ -46,16 +48,6 @@ export default {
     };
   },
   computed: {
-    status() {
-      let status;
-      if (this.item.uploadInfo.progress === 100) {
-        status = 'Uploaded'
-      } else if (this.item.uploadInfo.progress > 0) {
-        status = 'Uploading'
-      } else {
-        status = 'Not uploaded'
-      }
-    },
     avgSpeed() {
       let speed = 'N/A'
       if (this.item.uploadInfo.startTime) {
@@ -113,11 +105,13 @@ export default {
     flex-direction: row;
     display: flex;
     align-items: center;
-    .selected {
+    .selectToUpload {
       width: 10%;
-      justify-content: center;
-      .md-checkbox-label {
-        display: none;
+      .selected {
+        justify-content: center;
+        .md-checkbox-label {
+          display: none;
+        }
       }
     }
     .thumbnail {

@@ -36,12 +36,7 @@ export default {
       filesImport(formData)
         .then(newFiles => {
           this.$store.commit('addFiles', newFiles)
-          this.$store.commit('setStatus', statuses.SUCCESS)
         })
-        .catch(err => {
-          this.$store.commit('setError', err.response)
-          this.$store.commit('setStatus', statuses.FAILED)
-        });
     },
     filesChange(fieldName, fileList) {
       const formData = new FormData();
