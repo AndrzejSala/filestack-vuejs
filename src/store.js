@@ -38,6 +38,18 @@ export default new Vuex.Store({
         setError: (state, payload) => {
             state.uploadError = payload
         },
+        addExif: (state, payload) => {
+            let fileIndex = null;
+            for(let i = 0; i < state.files.length; i++) {
+                if(state.files[i].id === payload.id) {
+                    fileIndex = i;
+                    break;
+                }
+            }
+            if (fileIndex !== null) {
+                state.files[fileIndex].exif = payload.exif
+            }
+        },
         updateUploadProgress: (state, payload) => {
             let fileIndex = null;
             for(let i = 0; i < state.files.length; i++) {

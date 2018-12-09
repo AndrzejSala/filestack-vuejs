@@ -7,7 +7,7 @@
       <div class="thumbnail">
         <img
           v-if="imgExtensions.includes(item.extension)"
-          :src="item.fileData"
+          :src="item.baseData"
           class="img-responsive img-thumbnail"
           :alt="item.originalName"
         >

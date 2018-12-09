@@ -28,7 +28,7 @@ import ListElement from "./ListElement"
 import ActionButton from "./ActionButton"
 import * as filestack from "filestack-js"
 import statuses from "./../consts/statuses"
-const client = filestack.init("Ahf280VrETZO5jAW1g1w9z")
+const client = filestack.init(process.env.VUE_APP_FILESTACK_API_KEY)
 
 export default {
   name: "filesList",

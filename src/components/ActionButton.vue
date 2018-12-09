@@ -10,6 +10,7 @@
 <script>
 import * as filestack from "filestack-js";
 import statuses from "./../consts/statuses";
+process.env.API_KEY
 const client = filestack.init("Ahf280VrETZO5jAW1g1w9z");
 export default {
   name: "actionButton",
@@ -66,7 +67,7 @@ export default {
         };
         try {
           const res = await client.upload(
-            file.fileData,
+            file.baseData,
             { onProgress },
             { filename: file.fileName }
           );

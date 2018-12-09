@@ -1,5 +1,4 @@
 import uuid4 from 'uuid4'
-import {getExifData} from './exifHelper'
 
 function filesImport(formData) {
     const files = formData.getAll('files');
@@ -8,7 +7,8 @@ function filesImport(formData) {
         let fileObj = {
             id: uuid4(),
             originalName: x.name,
-            fileData: processedFile.baseFile,
+            originalData: x,
+            baseData: processedFile.baseFile,
             extension: x.name.split('.')[1],
             size: x.size,
             isSelected: false,
@@ -23,10 +23,10 @@ function filesImport(formData) {
                 url: null
             }
         }
-        if (['jpg', 'jpeg'].includes(fileObj.extension)) {
-            let exifData = await getExifData(x)
-            fileObj.exif = exifData
-        }
+        // if (['jpg', 'jpeg'].includes(fileObj.extension)) {
+        //     let exifData = await getExifData(x)
+        //     fileObj.exif = exifData
+        // }
         return fileObj
     });
     return Promise.all(promises);
