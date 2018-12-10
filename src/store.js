@@ -1,8 +1,8 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import createLogger from 'vuex/dist/logger'
-Vue.use(Vuex);
 const debug = process.env.NODE_ENV !== 'production'
+Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
@@ -11,7 +11,6 @@ export default new Vuex.Store({
         uploadError: null
     },
     getters: {
-        counter: state => state.counter * 2,
         files: state => state.files,
         currentStatus: state => state.currentStatus,
         uploadError: state => state.uploadError
@@ -23,9 +22,9 @@ export default new Vuex.Store({
             })
         },
         resetStore: state => {
-            state.files = [],
-                state.currentStatus = 0,
-                state.uploadError = null
+            state.files = []
+            state.currentStatus = 0
+            state.uploadError = null
         },
         selectFile: (state, payload) => {
             for (let file of state.files) {
@@ -39,40 +38,31 @@ export default new Vuex.Store({
             state.uploadError = payload
         },
         addExif: (state, payload) => {
-            let fileIndex = null;
-            for(let i = 0; i < state.files.length; i++) {
-                if(state.files[i].id === payload.id) {
-                    fileIndex = i;
-                    break;
-                }
-            }
-            if (fileIndex !== null) {
-                state.files[fileIndex].exif = payload.exif
-            }
+            state.files.filter(item => {
+                return item.id === payload.id
+            }).map(item => {
+                item.exif = payload.exif
+                return item
+            })
         },
         updateUploadProgress: (state, payload) => {
-            let fileIndex = null;
-            for(let i = 0; i < state.files.length; i++) {
-                if(state.files[i].id === payload.id) {
-                    fileIndex = i;
-                    break;
-                }
-            }
-            if (fileIndex !== null) {
-                let fileUploadInfo = state.files[fileIndex].uploadInfo
-                fileUploadInfo.progress = parseInt(payload.progress, 10)
-                fileUploadInfo.status = payload.progress !== 100 ? 'Uploading' : 'Uploaded'
+            state.files.filter(item => {
+                return item.id === payload.id
+            }).map(item => {
+                item.uploadInfo.progress = parseInt(payload.progress, 10)
+                item.uploadInfo.status = payload.progress !== 100 ? 'Uploading' : 'Uploaded'
                 if (payload.bytesSent) {
-                    fileUploadInfo.lastChunkSize = fileUploadInfo.lastChunkSize ? payload.bytesSent - fileUploadInfo.bytesSent : fileUploadInfo.bytesSent
-                    fileUploadInfo.bytesSent = payload.bytesSent
+                    item.uploadInfo.lastChunkSize = item.uploadInfo.lastChunkSize ? payload.bytesSent - item.uploadInfo.bytesSent : item.uploadInfo.bytesSent
+                    item.uploadInfo.bytesSent = payload.bytesSent
                 }
                 if (payload.startTime) {
-                    fileUploadInfo.startTime = payload.startTime
+                    item.uploadInfo.startTime = payload.startTime
                 } else if (payload.endTime) {
-                    fileUploadInfo.endTime = payload.endTime
-                    fileUploadInfo.url = payload.url
+                    item.uploadInfo.endTime = payload.endTime
+                    item.uploadInfo.url = payload.url
                 }
-            }
+                return item
+            })
         }
     },
     strict: debug,

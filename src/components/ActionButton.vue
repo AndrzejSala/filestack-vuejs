@@ -8,10 +8,9 @@
 </template>
 
 <script>
-import * as filestack from "filestack-js";
 import statuses from "./../consts/statuses";
-process.env.API_KEY
-const client = filestack.init("Ahf280VrETZO5jAW1g1w9z");
+import filestack from "./../services/filestackService";
+
 export default {
   name: "actionButton",
   computed: {
@@ -45,16 +44,15 @@ export default {
         };
         this.$store.commit("updateUploadProgress", payload);
         const onProgress = evt => {
-          let payload = {
+          payload = {
             id: file.id,
             progress: evt.totalPercent,
             bytesSent: evt.totalBytes
           };
           this.$store.commit("updateUploadProgress", payload);
         };
-        const onSuccess = (res) => {
-          // console.log('###', res.url)
-          let payload = {
+        const onSuccess = res => {
+          payload = {
             id: file.id,
             progress: 100,
             endTime: parseInt(new Date().getTime() / 1000, 10),
@@ -65,23 +63,10 @@ export default {
         const onError = () => {
           this.$store.commit("setStatus", statuses.ERROR);
         };
-        try {
-          const res = await client.upload(
-            file.baseData,
-            { onProgress },
-            { filename: file.fileName }
-          );
-          onSuccess(res);
-        } catch (err) {
-          onError(err);
-        }
+        filestack.uploadFile(file, onProgress, onSuccess, onError);
       }, this);
       this.$store.commit("setStatus", statuses.SUCCESS);
     }
   }
 };
 </script>
-
-<style>
-</style>
-

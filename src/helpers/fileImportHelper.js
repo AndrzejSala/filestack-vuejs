@@ -1,14 +1,19 @@
 import uuid4 from 'uuid4'
 
+/**
+ * Parse formData and create file object 
+ * which will be putted to the store
+ * @param {Object} formData - files form data object
+ */
 function filesImport(formData) {
     const files = formData.getAll('files');
-    const promises = files.map(async function(x) {
-        const processedFile = await getFile(x)
+    const promises = files.map(async (x) => {
+        const baseData = await getBase(x)
         let fileObj = {
             id: uuid4(),
             originalName: x.name,
             originalData: x,
-            baseData: processedFile.baseFile,
+            baseData,
             extension: x.name.split('.')[1],
             size: x.size,
             isSelected: false,
@@ -23,42 +28,28 @@ function filesImport(formData) {
                 url: null
             }
         }
-        // if (['jpg', 'jpeg'].includes(fileObj.extension)) {
-        //     let exifData = await getExifData(x)
-        //     fileObj.exif = exifData
-        // }
         return fileObj
     });
     return Promise.all(promises);
 }
 
-function getFile(file) {
+/**
+ * Read blob and return promise with object
+ * containing file encoded in base64 and original data
+ * @param {Blob} - Blob of a file
+ */
+function getBase(file) {
     return new Promise((resolve) => {
         const fReader = new FileReader();
         const img = document.createElement('img');
 
         fReader.onload = () => {
             img.src = fReader.result;
-            resolve({
-                baseFile: getBase64Image(img),
-                origFile: img
-            });
+            resolve(fReader.result);
         }
 
         fReader.readAsDataURL(file);
     })
 }
 
-function getBase64Image(img) {
-    const canvas = document.createElement('canvas');
-    canvas.width = img.width;
-    canvas.height = img.height;
-
-    const ctx = canvas.getContext('2d');
-    ctx.drawImage(img, 0, 0);
-    const dataURL = img.src;
-    return dataURL;
-}
-
 export { filesImport }
-	

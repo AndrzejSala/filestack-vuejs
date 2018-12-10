@@ -19,7 +19,7 @@
       <div class="status">{{item.uploadInfo.status}}</div>
     </div>
     <div class="filestackUrl">
-      {{item.uploadInfo.url}}
+      <a :href="item.uploadInfo.url">{{item.uploadInfo.url}}</a>
     </div>
     <div v-if="item.exif" class="exifInfoWrapper">
       <div :key="key" v-for="(value, key) in item.exif">
@@ -73,7 +73,7 @@ export default {
     currSpeed() {
       let speed = 'N/A'
       if (this.item.uploadInfo.startTime) {
-        if (this.item.uploadInfo.progress > 0) {
+        if (this.item.uploadInfo.progress > 0 && this.item.uploadInfo.progress < 100) {
           speed = `${parseInt(this.item.uploadInfo.lastChunkSize / 1000, 10)}KB/s`
         } else {
           speed = `${0}KB/s`
@@ -170,7 +170,6 @@ export default {
     }
   }
   .exifInfoWrapper {
-    margin-top: 20px;
     text-align: left;
     .key {
       font-weight: bold;

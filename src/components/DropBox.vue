@@ -8,7 +8,8 @@
         @change="filesChange($event.target.name, $event.target.files); fileCount = $event.target.files.length"
         class="input-file"
       >
-      <p v-if="isInitial">Drag your file(s) here to begin
+      <i class="cloud-icon material-icons md-48">cloud_upload</i>
+      <p class="importPrompt">Drag your file(s) here to begin
         <br>or click to browse
       </p>
     </div>
@@ -71,8 +72,15 @@ export default {
   min-height: 200px;
   position: relative;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   &:hover {
     background: lightblue;
+  }
+  .cloud-icon {
+    font-size: 48px;
   }
   .input-file {
     opacity: 0;
@@ -81,10 +89,10 @@ export default {
     position: absolute;
     cursor: pointer;
   }
-  p {
-    font-size: 1.2em;
+  .importPrompt {
+    font-size: 16px;
+    margin: 10px 0;
     text-align: center;
-    padding: 50px 0;
   }
 }
 </style>
