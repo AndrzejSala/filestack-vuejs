@@ -3,12 +3,15 @@ import uuid4 from 'uuid4'
 /**
  * Parse formData and create file object 
  * which will be putted to the store
- * @param {Object} formData - files form data object
+ * @param {FormData} formData - files form data object
  */
 function filesImport(formData) {
     const files = formData.getAll('files');
+    console.log('###8', files)
     const promises = files.map(async (x) => {
+        console.log('###9', x)
         const baseData = await getBase(x)
+        console.log('###99', baseData)
         let fileObj = {
             id: uuid4(),
             originalName: x.name,
@@ -41,13 +44,9 @@ function filesImport(formData) {
 function getBase(file) {
     return new Promise((resolve) => {
         const fReader = new FileReader();
-        const img = document.createElement('img');
-
         fReader.onload = () => {
-            img.src = fReader.result;
             resolve(fReader.result);
         }
-
         fReader.readAsDataURL(file);
     })
 }

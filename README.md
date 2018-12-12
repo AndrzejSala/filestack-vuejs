@@ -6,32 +6,20 @@ Make sure that you created .env file with variables similarly like in .env.examp
 
 The app can read exif 'model' and 'orientation' tags. In order to check that you can use files from ./photo_examples
 
+The app is now hosted on heroku under this url (take into consideration, that an app instance can be suspended and in this case you should wait a moment)
+
+**https://filestack-app.herokuapp.com/**
+
 Have fun 🤯
 
-## Project setup
+## How to run this app localy
 ```
-npm install
+$ npm install
+$ npm run serve
 ```
+visit http://localhost:8080
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Run your tests
+## How to run tests
 ```
 npm run test
 ```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
