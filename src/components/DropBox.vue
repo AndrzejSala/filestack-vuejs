@@ -54,9 +54,6 @@ export default {
       const formData = new FormData();
       if (!fileList.length) return;
       Array.from(Array(fileList.length).keys()).map(x => {
-        console.log('###1', fieldName)
-        console.log('###2', fileList[x])
-        console.log('###3', fileList[x].name)
         formData.append(fieldName, fileList[x], fileList[x].name);
       });
       this.save(formData);
