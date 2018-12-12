@@ -36,7 +36,10 @@ export default {
     },
     upload() {
       this.$store.commit("setStatus", statuses.UPLOAD);
-      this.$store.getters.files.forEach(async function(file) {
+      const filesToUpload = this.$store.getters.files.filter(file => {
+        return file.isSelected
+      })
+      filesToUpload.forEach(async function(file) {
         let payload = {
           id: file.id,
           progress: 0,

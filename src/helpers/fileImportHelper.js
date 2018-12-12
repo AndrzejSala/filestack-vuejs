@@ -6,6 +6,7 @@ import uuid4 from 'uuid4'
  * @param {Object} formData - files form data object
  */
 function filesImport(formData) {
+    console.log('###1', formData)
     const files = formData.getAll('files');
     const promises = files.map(async (x) => {
         const baseData = await getBase(x)
