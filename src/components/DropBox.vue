@@ -5,7 +5,7 @@
         type="file"
         multiple
         name="files"
-        @change="filesChange($event.target.name, $event.target.files); fileCount = $event.target.files.length"
+        @change="filesChange($event.target.files)"
         class="input-file"
       >
       <i class="cloud-icon material-icons md-48">cloud_upload</i>
@@ -50,14 +50,11 @@ export default {
         });
       });
     },
-    filesChange(fieldName, fileList) {
+    filesChange(fileList) {
       const formData = new FormData();
       if (!fileList.length) return;
       Array.from(Array(fileList.length).keys()).map(x => {
-        console.log('###1', fieldName)
-        console.log('###2', fileList[x])
-        console.log('###3', fileList[x].name)
-        formData.append(fieldName, fileList[x], fileList[x].name);
+        formData.append("files", fileList[x], fileList[x].name);
       });
       this.save(formData);
     }

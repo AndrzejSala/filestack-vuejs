@@ -7,11 +7,8 @@ import uuid4 from 'uuid4'
  */
 function filesImport(formData) {
     const files = formData.getAll('files');
-    console.log('###8', files)
     const promises = files.map(async (x) => {
-        console.log('###9', x)
         const baseData = await getBase(x)
-        console.log('###99', baseData)
         let fileObj = {
             id: uuid4(),
             originalName: x.name,
