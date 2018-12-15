@@ -3,6 +3,6 @@ npm run build
 #!/bin/bash
 docker build -t web .
 
-heroku container:push web
-heroku container:release web
-heroku open
+heroku container:push web --app=filestack-app
+heroku container:release web --app=filestack-app
+heroku open --app=filestack-app

@@ -17,14 +17,14 @@
 </template>
 
 <script>
-import { filesImport } from "./../helpers/fileImportHelper";
-import statuses from "./../consts/statuses";
+import { filesImport } from './../helpers/fileImportHelper'
+import appConsts from './../consts/appConsts'
 
 export default {
-  name: "dropBox",
+  name: 'dropBox',
   computed: {
     isInitial() {
-      return this.$store.getters.currentStatus === statuses.INITIAL;
+      return this.$store.getters.currentStatus === appConsts.STATUSES.INITIAL;
     },
     files() {
       return this.$store.getters.files;
@@ -32,31 +32,31 @@ export default {
   },
   methods: {
     save(formData) {
-      this.$store.commit("setStatus", statuses.IMPORT);
+      this.$store.commit('setStatus', {currentStatus: appConsts.STATUSES.IMPORT})
       filesImport(formData).then(newFiles => {
-        this.$store.commit("addFiles", newFiles);
+        this.$store.commit('addFiles', newFiles)
         newFiles.forEach(file => {
-          if (["jpg", "jpeg"].includes(file.extension)) {
-            let exifWorker = new Worker("./exifWorker.js");
-            exifWorker.postMessage(file.originalData);
+          if (['jpg', 'jpeg'].includes(file.extension)) {
+            let exifWorker = new Worker('./exifWorker.js')
+            exifWorker.postMessage(file.originalData)
             exifWorker.onmessage = e => {
               let payload = {
                 id: file.id,
                 exif: e.data
               };
-              this.$store.commit("addExif", payload);
+              this.$store.commit('addExif', payload)
             };
           }
         });
       });
     },
     filesChange(fileList) {
-      const formData = new FormData();
+      const formData = new FormData()
       if (!fileList.length) return;
       Array.from(Array(fileList.length).keys()).map(x => {
-        formData.append("files", fileList[x], fileList[x].name);
+        formData.append('files', fileList[x], fileList[x].name)
       });
-      this.save(formData);
+      this.save(formData)
     }
   }
 };

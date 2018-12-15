@@ -8,14 +8,14 @@
 </template>
 
 <script>
-import statuses from "./../consts/statuses";
-import filestack from "./../services/filestackService";
+import filestack from "./../services/filestackService"
+import appConsts from './../consts/appConsts'
 
 export default {
   name: "actionButton",
   computed: {
     isImport() {
-      return this.$store.getters.currentStatus === statuses.IMPORT;
+      return this.$store.getters.currentStatus === appConsts.STATUSES.IMPORT;
     },
     files() {
       return this.$store.getters.files;
@@ -35,7 +35,7 @@ export default {
       this.$store.commit("resetStore");
     },
     upload() {
-      this.$store.commit("setStatus", statuses.UPLOAD);
+      this.$store.commit("setStatus", {currentStatus: appConsts.STATUSES.UPLOAD});
       const filesToUpload = this.$store.getters.files.filter(file => {
         return file.isSelected
       })
@@ -63,12 +63,12 @@ export default {
           };
           this.$store.commit("updateUploadProgress", payload);
         };
-        const onError = () => {
-          this.$store.commit("setStatus", statuses.ERROR);
+        const onError = (error) => {
+          this.$store.commit("setStatus", {currentStatus: appConsts.STATUSES.ERROR, error});
         };
-        filestack.uploadFile(file, onProgress, onSuccess, onError);
+        filestack.uploadFile(appConsts.FILESTACK_API_KEY, file, onProgress, onSuccess, onError);
       }, this);
-      this.$store.commit("setStatus", statuses.SUCCESS);
+      this.$store.commit("setStatus", {currentStatus: appConsts.STATUSES.SUCCESS});
     }
   }
 };

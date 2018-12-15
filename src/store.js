@@ -8,12 +8,12 @@ export default new Vuex.Store({
     state: {
         files: [],
         currentStatus: 0,
-        uploadError: null
+        error: null
     },
     getters: {
         files: state => state.files,
         currentStatus: state => state.currentStatus,
-        uploadError: state => state.uploadError
+        error: state => state.error
     },
     mutations: {
         addFiles: (state, payload) => {
@@ -24,7 +24,7 @@ export default new Vuex.Store({
         resetStore: state => {
             state.files = []
             state.currentStatus = 0
-            state.uploadError = null
+            state.error = null
         },
         selectFile: (state, payload) => {
             for (let file of state.files) {
@@ -32,10 +32,10 @@ export default new Vuex.Store({
             }
         },
         setStatus: (state, payload) => {
-            state.currentStatus = payload
-        },
-        setError: (state, payload) => {
-            state.uploadError = payload
+            state.currentStatus = payload.currentStatus
+            if (payload.error) {
+                state.error = payload.error
+            }
         },
         addExif: (state, payload) => {
             state.files.filter(item => {
