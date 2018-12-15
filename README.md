@@ -21,5 +21,5 @@ visit http://localhost:8080
 
 ## How to run tests
 ```
-$ npm run tests
+$ npm run test
 ```
