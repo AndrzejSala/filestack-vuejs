@@ -30,7 +30,7 @@ describe('components:', () => {
             expect(storeMocks.getters.currentStatus).toBeCalled();
         });
         it('should show DropBox when status is initial', () => {
-            storeMocks = createStoreMocks({ getters: { currentStatus: () => 0 } });
+            storeMocks = createStoreMocks({ getters: { currentStatus: () => 0 } })
             wrapper = shallow(FileUploader, {
                 store: storeMocks.store,
                 localVue,
@@ -40,7 +40,7 @@ describe('components:', () => {
             expect(wrapper.find(ErrorInfo).exists()).toBeFalsy()
         })
         it('should show FilesList when status is import', () => {
-            storeMocks = createStoreMocks({ getters: { currentStatus: () => 1 } });
+            storeMocks = createStoreMocks({ getters: { currentStatus: () => 1 } })
             wrapper = shallow(FileUploader, {
                 store: storeMocks.store,
                 localVue,
@@ -50,7 +50,7 @@ describe('components:', () => {
             expect(wrapper.find(ErrorInfo).exists()).toBeFalsy()
         })
         it('should show FilesList when status is upload', () => {
-            storeMocks = createStoreMocks({ getters: { currentStatus: () => 2 } });
+            storeMocks = createStoreMocks({ getters: { currentStatus: () => 2 } })
             wrapper = shallow(FileUploader, {
                 store: storeMocks.store,
                 localVue,
@@ -60,7 +60,7 @@ describe('components:', () => {
             expect(wrapper.find(ErrorInfo).exists()).toBeFalsy()
         })
         it('should show FilesList when status is success', () => {
-            storeMocks = createStoreMocks({ getters: { currentStatus: () => 3 } });
+            storeMocks = createStoreMocks({ getters: { currentStatus: () => 3 } })
             wrapper = shallow(FileUploader, {
                 store: storeMocks.store,
                 localVue,
@@ -70,7 +70,7 @@ describe('components:', () => {
             expect(wrapper.find(ErrorInfo).exists()).toBeFalsy()
         })
         it('should show ErrorInfo when status is error', () => {
-            storeMocks = createStoreMocks({ getters: { currentStatus: () => 4 } });
+            storeMocks = createStoreMocks({ getters: { currentStatus: () => 4 } })
             wrapper = shallow(FileUploader, {
                 store: storeMocks.store,
                 localVue,

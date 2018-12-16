@@ -23,9 +23,6 @@ import appConsts from './../consts/appConsts'
 export default {
   name: 'dropBox',
   computed: {
-    isInitial() {
-      return this.$store.getters.currentStatus === appConsts.STATUSES.INITIAL;
-    },
     files() {
       return this.$store.getters.files;
     }

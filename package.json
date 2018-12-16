@@ -1,6 +1,6 @@
 {
   "name": "filestack-vuejs",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "author": "Andrzej Sala <andrzej.sala@outlook.com>",
   "private": true,
   "engines": {
